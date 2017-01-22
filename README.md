@@ -3,7 +3,7 @@
 [VerneMQ](https://github.com/erlio/vernemq) cluster with auto-discovery using the unmodified image of vernemq and kubernetes 1.5 new StatefulSets resource
 
 #### Prerequisites
-* A running [kubernetes cluster](http://kubernetes.io/gettingstarted/)
+* A running [kubernetes cluster (on version 1.5 or above)](http://kubernetes.io/gettingstarted/)
 
 #### How to Use
 1. Create vernemq namespace
