@@ -1,15 +1,15 @@
 # VerneMQ On Kubernetes
 
-[VerneMQ](https://github.com/erlio/vernemq) cluster with auto-discovery using the unmodified image of vernemq and kubernetes 1.5 new [StatefulSets](https://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets) resource
+[VerneMQ](https://github.com/erlio/vernemq) cluster with auto-discovery using the unmodified image of vernemq backed by kubernetes 1.5 new [StatefulSets](https://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets) Controller
 
 #### Prerequisites
 * A running [kubernetes cluster (on version 1.5 or above)](http://kubernetes.io/gettingstarted/)
 
 #### How to Use
 1. Create vernemq namespace
-* ``` kubectl create namespace vernemq ```
+  * ``` kubectl create namespace vernemq ```
 2. Create the service and statefulset
-* ``` kubectl create -f vernemq-ss.yaml ```
+  * ``` kubectl create -f vernemq-ss.yaml ```
 
 #### Checking cluster status
 ```
