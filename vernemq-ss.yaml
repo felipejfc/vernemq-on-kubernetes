@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vernemq
+  namespace: vernemq
+  labels:
+    app: vernemq
+spec:
+  ports:
+    - port: 1883
+      name: mqtt
+    - port: 8883
+      name: mqttssl
+  clusterIP: None
+  selector:
+    app: vernemq
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: vernemq
+  namespace: vernemq
+spec:
+  serviceName: vernemq
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: vernemq
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+        pod.beta.kubernetes.io/init-containers: '[
+          {
+            "name": "init-vernemq-cluster",
+            "image": "erlio/docker-vernemq:0.15.3",
+            "command": ["bash", "-c", "
+              set -ex\n
+              cp -r /etc/vernemq/* /mnt/vernemq/\n
+              H=`hostname`\n
+              if [[ \"$H\" != \"vernemq-0\" ]]; then\n
+                SEED=`getent hosts vernemq-0.vernemq | awk ''{ print $1 }''`\n
+                if [[ \"$SEED\" != \"\" ]]; then\n
+                  echo -eval \"\\\"vmq_server_cmd:node_join(''VerneMQ@${SEED}'')\\\"\" >> /mnt/vernemq/vm.args\n
+                else\n
+                  echo \"[warning] could not find host vernemq-0.vernemq. not joining a cluster!\"\n
+                  exit 1\n
+                fi\n
+              fi\n
+            "],
+            "volumeMounts": [
+              {"name": "conf", "mountPath": "/mnt/vernemq"}
+            ]
+          }]'
+    spec:
+      containers:
+      - name: vernemq
+        image: erlio/docker-vernemq:0.15.3
+        ports:
+          - containerPort: 1883
+            name: mqtt
+          - containerPort: 8080
+            name: websock
+          - containerPort: 44053
+            name: epmd
+          - containerPort: 4369
+            name: data
+          - containerPort: 9100
+          - containerPort: 9101
+          - containerPort: 9102
+          - containerPort: 9103
+          - containerPort: 9104
+          - containerPort: 9105
+          - containerPort: 9106
+          - containerPort: 9107
+          - containerPort: 9108
+          - containerPort: 9109
+        volumeMounts:
+          - name: conf
+            mountPath: /etc/vernemq
+      volumes:
+      - name: conf
+        emptyDir: {}
