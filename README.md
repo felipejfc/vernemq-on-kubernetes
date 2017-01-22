@@ -1,6 +1,6 @@
 # VerneMQ On Kubernetes
 
-[VerneMQ](https://github.com/erlio/vernemq) cluster with auto-discovery using the unmodified image of vernemq and kubernetes 1.5 new StatefulSets resource
+[VerneMQ](https://github.com/erlio/vernemq) cluster with auto-discovery using the unmodified image of vernemq and kubernetes 1.5 new [StatefulSets](https://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets) resource
 
 #### Prerequisites
 * A running [kubernetes cluster (on version 1.5 or above)](http://kubernetes.io/gettingstarted/)
